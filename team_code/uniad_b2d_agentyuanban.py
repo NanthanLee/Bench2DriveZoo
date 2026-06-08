@@ -322,8 +322,8 @@ class UniadAgent(autonomous_agent.AutonomousAgent):
     def run_step(self, input_data, timestamp):
         if not self.initialized:
             self._init()
-        current_sim_time = timestamp   
-        tick_data = self.tick(input_data)       
+        current_sim_time = timestamp
+        tick_data = self.tick(input_data)
         results = {}
         results['lidar2img'] = []
         results['lidar2cam'] = []
@@ -389,7 +389,7 @@ class UniadAgent(autonomous_agent.AutonomousAgent):
         steer_traj, throttle_traj, brake_traj, metadata_traj = self.pidcontroller.control_pid(out_truck, tick_data['speed'], local_command_xy)
         if brake_traj < 0.05: brake_traj = 0.0
         if throttle_traj > brake_traj: brake_traj = 0.0
-        if tick_data['speed']>110/3.6:
+        if tick_data['speed']>140:
             throttle_traj = 0
         control = carla.VehicleControl()
         self.pid_metadata = metadata_traj
@@ -409,7 +409,7 @@ class UniadAgent(autonomous_agent.AutonomousAgent):
         if SAVE_PATH is not None and self.step % 1 == 0:
             self.save(tick_data)
         self.prev_control = control
-        
+      
         hero_speed_kmh = tick_data['speed'] * 3.6 
         
         print(
